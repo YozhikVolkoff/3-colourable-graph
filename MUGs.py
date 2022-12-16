@@ -101,9 +101,3 @@ MUG_12c = np.array([
 ])
 
 MUGS = [MUG_9, MUG_10, MUG_11a, MUG_11b, MUG_12a]
-
-for m in MUGS:
-    for i in range(m.shape[0]):
-        for j in range(m.shape[0]):
-            if m[i][j] != m[j][i]:
-                print(i, j, m[i][j], m[j][i])
