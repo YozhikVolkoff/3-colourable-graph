@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from MUGs import MUG_9, MUG_10, MUG_11a, MUG_11b, MUG_12a # MUG_12b, MUG_12c
-from params import Graphs_to_generate, max_embedding_iterations
+from params import graphs_to_generate, max_embedding_iterations
 
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -260,7 +260,7 @@ def run_once(max_embeddings):
 
 statistics, vertexes_data, colours_data = list(), list(), list()
 asymp = list()
-for i in range(Graphs_to_generate):
+for i in range(graphs_to_generate):
     vertexes, colours = run_once(max_embedding_iterations)
     n = colours/(vertexes ** 0.5)
     asymp.append(n)
@@ -271,6 +271,6 @@ for i in range(Graphs_to_generate):
 
 plt.scatter(vertexes_data, colours_data)
 plt.plot([i for i in range(max_embedding_iterations*11)], [(j ** 0.5) * 3 for j in range(max_embedding_iterations*11)])
-plt.plot([i for i in range(max_embedding_iterations*11)], [(j ** 0.5) for j in range(max_embedding_iterations*11)])
+plt.plot([i for i in range(max_embedding_iterations*11)], [(j ** 0.5) * 2.1 for j in range(max_embedding_iterations*11)])
 plt.show()
 print(max(asymp))
