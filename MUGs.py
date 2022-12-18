@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import numpy as np
 
-# Specify MUGS here
+
+# Specify MUGs here
 MUG_9 = np.array([
     [0, 1, 1, 0, 0, 1, 0, 0, 1],
     [1, 0, 1, 1, 0, 0, 0, 1, 0],
@@ -100,4 +101,4 @@ MUG_12c = np.array([
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ])
 
-MUGS = [MUG_9, MUG_10, MUG_11a, MUG_11b, MUG_12a]
+MUGs = [MUG_9, MUG_10, MUG_11a, MUG_11b, MUG_12a]  # MUG_12b, MUG_12c
