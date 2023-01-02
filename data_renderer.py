@@ -16,11 +16,13 @@ def show_graph_with_labels(adjacency_matrix):
 
 
 def render_data_mugs(vertexes_data, colours_data):
-    plt.scatter(vertexes_data, colours_data)
+    plt.scatter(vertexes_data, colours_data, c='red', alpha=0.2, edgecolors='none')
     plt.plot([i for i in range(MAX_EMBEDDING_ITERATIONS*11)], [(j ** 0.5) * 3 for j in range(MAX_EMBEDDING_ITERATIONS*11)])
     plt.plot([i for i in range(MAX_EMBEDDING_ITERATIONS*11)], [(j ** 0.5) * 2.1 for j in range(MAX_EMBEDDING_ITERATIONS*11)])
     plt.show()
 
 
 def render_data_random(vertexes_data, colours_data):
-    pass
+    plt.scatter(vertexes_data, colours_data, c='green')
+    plt.plot([i for i in range(MAX_EMBEDDING_ITERATIONS*11)], [(j ** 0.5) * 3 for j in range(MAX_EMBEDDING_ITERATIONS*11)])
+    plt.show()
