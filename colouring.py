@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import numpy as np
 
 
@@ -25,14 +24,14 @@ def colour_v_with_neighbours_and_get_them_out(G, v_i, colours):
     v_count = G.shape[0]
 
     # Find all vertexes v_i is connected with
-    v_i_neighbours = []
+    v_i_neighbours = list()
     for i in range(v_count):
         if G[v_i][i] == 1:
             v_i_neighbours.append(i)
-    
+
     # Use first colour of all to colour v_i
     colours[v_i] = 1
-    # Pick new possible colour and colour the main vertex, v_i
+    # Pick new possible colour
     new_colour = max(colours) + 1
 
     # v_i and v_i_neighbours form a 3-colourable graph, where v_i is connected
@@ -42,7 +41,7 @@ def colour_v_with_neighbours_and_get_them_out(G, v_i, colours):
         may_colour_in_new_colour = True
         # We check only vertexes in v_i_neighbours, other will have other colours
         for j in v_i_neighbours:
-            if G[v_current][j] == 1 and colours[j] == (new_colour):
+            if G[v_current][j] == 1 and colours[j] == new_colour:
                 may_colour_in_new_colour = False
                 break
 
@@ -51,7 +50,7 @@ def colour_v_with_neighbours_and_get_them_out(G, v_i, colours):
         else:
             colours[v_current] = new_colour + 1
 
-    # Lastly, we have to delete all edges adjacent to v_i or v_i_neighbours
+    # Lastly, we have to delete all edges adjacent to v_i and v_i_neighbours
     v_i_neighbours.append(v_i)
     for i in v_i_neighbours:
         for j in range(v_count):
@@ -72,13 +71,11 @@ def colour_graph(G_input):
     while v_i := find_vertex_with_degree_more_then_square_of_n(G, v_count):
         colour_v_with_neighbours_and_get_them_out(G, v_i, colours)
     
-    # Lastly, we perform a greedy colouring algorithm. All vertexes have
-    # degree less than (n ** 0.5), so we need this number of colours.
+    # Lastly, we perform a greedy colouring algorithm
     min_unused_colour = max(colours) + 1
 
-    # Get uncoloured vertexes. All coloured now have no edges adjanced to them, so we wiil count degrees
+    # Get uncoloured vertexes. All coloured now have no edges adjanced to them, so we will count degrees
     last_vertexes = list()
-    v_degrees = np.sum(G, axis=0)
     for i in range(v_count):
         if colours[i] == 0:
             last_vertexes.append(i)
@@ -90,12 +87,12 @@ def colour_graph(G_input):
             if G[v_current][j] == 1 and colours[j] != 0:
                 neighbours_colours.add(colours[j])
         
-        # Find the first colour which is not used by neighbours
-        min_acceptable_colour = min_unused_colour
-        while min_acceptable_colour in neighbours_colours:
-            min_acceptable_colour += 1
+        # Find colour which is not used by neighbours
+        acceptable_colour = min_unused_colour
+        while acceptable_colour in neighbours_colours:
+            acceptable_colour += 1
 
-        colours[v_current] = min_acceptable_colour
+        colours[v_current] = acceptable_colour
 
     return colours
 

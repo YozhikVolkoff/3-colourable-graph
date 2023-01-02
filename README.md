@@ -1,10 +1,12 @@
 ## Plan
 
-- [x] MUGs
+- [ ] MUGs: 12b and 12c remaining
+- [x] Generate graphs with MUGs
+
+- [ ] Generate random graph: need to write delete_edges()
+
 - [x] Check correct colouring
-- [x] Generating graphs with MUGs
 - [x] Make drawing function, getting right asympthotics
 
-- [ ] Generate random graph
-- [ ] Get the same asympthotics on random graph
-- [ ] Combine - ?????????
+- [x] Refactor params and main.py
+- [ ] Combine - ??

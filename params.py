@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
-graphs_to_generate = 500
+GRAPHS_TO_GENERATE = 500
 
-max_embedding_iterations = 10
+MAX_EMBEDDING_ITERATIONS = 20
 
-total_number = 20
-number_to_place_an_edge = 6
+VERTEXES_MIN = 10
+VERTEXES_MAX = 11
+P_TO_PLACE_AN_EDGE = 0.00001

@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
 from mugs import MUGs
+from params import MAX_EMBEDDING_ITERATIONS
 
 import numpy as np
 import random
@@ -16,7 +16,7 @@ def pick_random_edge_with_left_degree_less_4(G):
         # If this failed, we pick next random vertex
         if v_degrees[random_vertex] <= 3:
             # Get all vertexes which are connected with random_vertex
-            random_vertex_neighbours = []
+            random_vertex_neighbours = list()
             for j in range(v_count):
                 if G[random_vertex][j] == 1:
                     random_vertex_neighbours.append(j)
@@ -93,7 +93,9 @@ def embed_random_MUG(G, random_MUG, G_edge):
     return new_G
 
 
-def generate_3_colourable_graph_with_MUGs(embedding_iterations):
+def generate_3_colourable_graph_with_MUGs():
+    embedding_iterations = random.randint(1, MAX_EMBEDDING_ITERATIONS)
+
     # Prepare an initial matrix. For example, any of MUGs
     G = random.choice(MUGs)
     # show_graph_with_labels(G)
