@@ -16,12 +16,12 @@ def pick_random_edge_with_left_degree_less_4(G):
         # If this failed, we pick next random vertex
         if v_degrees[random_vertex] <= 3:
             # Get all vertexes which are connected with random_vertex
-            random_vertex_neighbours = list()
+            random_vertex_neighbours = np.array([], dtype=int)
             for j in range(v_count):
                 if G[random_vertex][j] == 1:
-                    random_vertex_neighbours.append(j)
+                    random_vertex_neighbours = np.append(random_vertex_neighbours, j)
 
-            if not random_vertex_neighbours:
+            if not random_vertex_neighbours.size:
                 continue
             # Pick one of vertexes from random_vertex_neighbours
             second_vertex = random.choice(random_vertex_neighbours)
