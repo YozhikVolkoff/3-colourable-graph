@@ -25,6 +25,8 @@ def colour_vertexes_recursively(G, v_i_neighbours, colours, v_current, new_colou
     for v in v_i_neighbours:
         if G[v_current][v] and not colours[v]:
             colours[v] = possible_colour
+            # We have only two colours to choose from, black and white. So if v_current got
+            # white, her neighbours need to get black, and vice versa
             colour_vertexes_recursively(G, v_i_neighbours, colours, v, new_colour, not is_white)
 
 
@@ -47,6 +49,7 @@ def colour_v_with_neighbours_and_get_them_out(G, v_i, colours):
 
     for v_first in v_i_neighbours:
         if not colours[v_first]:
+            # use new_colour (aka white) for v_first; for its neighbours will be used new_colour + 1 (aka black)
             colours[v_first] = new_colour
             colour_vertexes_recursively(G, v_i_neighbours, colours, v_first, new_colour, is_white=False)
 

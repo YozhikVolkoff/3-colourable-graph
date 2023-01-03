@@ -98,15 +98,12 @@ def generate_3_colourable_graph_with_MUGs():
 
     # Prepare an initial matrix. For example, any of MUGs
     G = random.choice(MUGs)
-    # show_graph_with_labels(G)
 
     for w in range(embedding_iterations):
         G_edge = pick_random_edge_with_left_degree_less_4(G)
 
         random_MUG = random.choice(MUGs)
-        # show_graph_with_labels(random_MUG)
 
         G = embed_random_MUG(G, random_MUG, G_edge)
-        # show_graph_with_labels(G)
 
     return G

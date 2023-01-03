@@ -1,5 +1,4 @@
 from params import P_TO_PLACE_AN_EDGE, VERTEXES_MIN, VERTEXES_MAX
-from data_renderer import show_graph_with_labels
 import numpy as np
 import random
 
@@ -9,6 +8,7 @@ def delete_extra_edges(G):
     colours = np.zeros((v_count,))
 
     for v_i in range(v_count):
+        # Pick a colour for v_i (extremely simplified, but works)
         colour_for_v_i = v_i % 3 + 1
 
         # Delete edges which connect v_i with the vertexes of the chosen
@@ -33,7 +33,8 @@ def generate_random_3_colourable_graph():
             if to_be_or_not_to_be <= P_TO_PLACE_AN_EDGE:
                 G[i][j] = 1
                 G[j][i] = 1
-    
+
+    # Delete some edges to make this graph 3-colourable for sure
     delete_extra_edges(G)
 
     return G
