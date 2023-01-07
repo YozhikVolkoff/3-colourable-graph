@@ -4,6 +4,9 @@ from colouring import colour_graph, check_if_correctly_coloured, GraphColouringE
 from params import GRAPHS_TO_GENERATE
 from data_renderer import render_data_mugs, render_data_random
 
+from tqdm import tqdm
+import numpy as np
+
 
 def run_once_with_MUGs():
     G = generate_3_colourable_graph_with_MUGs()
@@ -33,25 +36,26 @@ def run_once_with_random_generator():
 
 
 def run():
-    vertexes_mugs, colours_mugs = list(), list()
-    vertexes_random, colours_random = list(), list()
-    asymp_mugs, asymp_random = 0, 0
+    vertexes_mugs, colours_mugs = np.empty([GRAPHS_TO_GENERATE], dtype=int), np.empty([GRAPHS_TO_GENERATE], dtype=int)
+    vertexes_random, colours_random = np.empty([GRAPHS_TO_GENERATE], dtype=int), np.empty([GRAPHS_TO_GENERATE], dtype=int)
+    asymp_mugs, asymp_random, average_random = 0, 0, 0
 
-    for i in range(GRAPHS_TO_GENERATE):
+    for i in tqdm(range(GRAPHS_TO_GENERATE)):
         vertexes, colours = run_once_with_MUGs()
         n = colours/(vertexes ** 0.5)
         asymp_mugs = n if n > asymp_mugs else asymp_mugs
-        vertexes_mugs.append(vertexes)
-        colours_mugs.append(colours)
+        vertexes_mugs[i] = vertexes
+        colours_mugs[i] = colours
 
         vertexes, colours = run_once_with_random_generator()
         n = colours/(vertexes ** 0.5)
         asymp_random = n if n > asymp_random else asymp_random
-        vertexes_random.append(vertexes)
-        colours_random.append(colours)
+        average_random += n/GRAPHS_TO_GENERATE
+        vertexes_random[i] = vertexes
+        colours_random[i]= colours
 
     render_data_mugs(vertexes_mugs, colours_mugs)
-    render_data_random(vertexes_random, colours_random)
+    render_data_random(vertexes_random, colours_random, average_random)
     print("Asymptotic is {} for MUGs generator and {} for random generator".format(asymp_mugs, asymp_random))
 
 if __name__ == '__main__':

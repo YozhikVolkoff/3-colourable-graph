@@ -100,4 +100,3 @@ MUG_12C = np.array([
 ])
 
 MUGs = [MUG_9, MUG_10, MUG_11A, MUG_11B, MUG_12A, MUG_12B, MUG_12C]
-        

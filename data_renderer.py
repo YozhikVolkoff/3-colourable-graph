@@ -25,7 +25,8 @@ def render_data_mugs(vertexes_data, colours_data):
     plt.show()
 
 
-def render_data_random(vertexes_data, colours_data):
+def render_data_random(vertexes_data, colours_data, average_random):
     plt.scatter(vertexes_data, colours_data, c='green', alpha=ALPHA, edgecolors='none')
     plt.plot([i for i in range(VERTEXES_MAX)], [(j ** 0.5) * 3 for j in range(VERTEXES_MAX)])
+    plt.plot([i for i in range(VERTEXES_MAX)], [(j ** 0.5) * average_random for j in range(VERTEXES_MAX)],'r')
     plt.show()

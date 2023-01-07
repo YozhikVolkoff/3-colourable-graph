@@ -19,21 +19,33 @@ def find_vertex_with_degree_more_then_square_of_n(G, n):
     return -1
 
 
-def colour_vertexes_recursively(G, v_i_neighbours, colours, v_current, new_colour, is_white):
-    possible_colour = new_colour if is_white else new_colour + 1
+def colour_vertexes_with_queue(G, colours, v_i_neighbours):
+    # Pick new colour (especially two, new_colour and new_colour + 1)
+    new_colour = np.amax(colours) + 1
 
-    for v in v_i_neighbours:
-        if G[v_current][v] and not colours[v]:
-            colours[v] = possible_colour
-            # We have only two colours to choose from, black and white. So if v_current got
-            # white, her neighbours need to get black, and vice versa
-            colour_vertexes_recursively(G, v_i_neighbours, colours, v, new_colour, not is_white)
+    # Iterate all v_i_neighbours because they may form a few sepatated groups
+    for v_first in v_i_neighbours:
+        # For each vertex prepare a queue...
+        vertexes_queue = list()
+        colours[v_first] = new_colour
+        vertexes_queue.append(v_first)
+
+        while vertexes_queue:
+            # ... which will be used to spread the colours. Take a vertex from the top of the queue
+            v_current = vertexes_queue.pop(-1)
+            for j in v_i_neighbours:
+                # If it has a coloured neighbour, colour it in the different colour
+                if G[v_current][j] and colours[j]:
+                    colours[v_current] = new_colour if colours[j] != new_colour else new_colour + 1
+                # Otherwise, add it to the top of the queue
+                elif G[v_current][j] and not colours[j] and j not in vertexes_queue:
+                    vertexes_queue.append(j)
 
 
 def colour_v_with_neighbours_and_get_them_out(G, v_i, colours):
     v_count = G.shape[0]
 
-    # Find all vertexes v_i is connected with
+    # Collect v_i neighbours
     v_i_neighbours = np.array([], dtype=int)
     for i in range(v_count):
         if G[v_i][i]:
@@ -45,14 +57,7 @@ def colour_v_with_neighbours_and_get_them_out(G, v_i, colours):
     # v_i and v_i_neighbours form a 3-colourable graph, where v_i is connected
     # with all of them; so for v_i_neighbours without v_i we may perform a
     # colouring in two new colours, which is simply
-    new_colour = np.amax(colours) + 1
-
-    for v_first in v_i_neighbours:
-        if not colours[v_first]:
-            # use new_colour (aka white) for v_first; for its neighbours will be used new_colour + 1 (aka black)
-            colours[v_first] = new_colour
-            colour_vertexes_recursively(G, v_i_neighbours, colours, v_first, new_colour, is_white=False)
-
+    colour_vertexes_with_queue(G, colours, v_i_neighbours)
 
     # Lastly, we have to delete all edges adjacent to v_i and v_i_neighbours
     v_i_neighbours = np.append(v_i_neighbours, v_i)
@@ -62,25 +67,13 @@ def colour_v_with_neighbours_and_get_them_out(G, v_i, colours):
             G[j][i] = 0
 
 
-def colour_graph(G_input):
-    v_count = G_input.shape[0]
-    # Prepare an array for colours, 0 = not coloured
-    colours = np.zeros((v_count,))
+def greedy_colouring(G, colours):
+    v_count = G.shape[0]
 
-    # Full copy the input graph G_input because we will modify it
-    G = G_input.copy()
-
-    # While we may fing the vertex which is connected with at least n ** 0.5 other vertexes,
-    # we call colour_v_with_neighbours_and_get_them_out() procedure
-    v_i = find_vertex_with_degree_more_then_square_of_n(G, v_count)
-    while v_i >= 0:
-        colour_v_with_neighbours_and_get_them_out(G, v_i, colours)
-        v_i = find_vertex_with_degree_more_then_square_of_n(G, v_count)
-
-    # Lastly, we perform a greedy colouring algorithm
+    # Pick new colour
     min_unused_colour = np.amax(colours) + 1
 
-    # Get uncoloured vertexes. All coloured now have no edges adjanced to them, so we will count degrees
+    # Get uncoloured vertexes. All coloured now have no edges adjanced to them
     last_vertexes = np.array([], dtype=int)
     for i in range(v_count):
         if not colours[i]:
@@ -99,6 +92,25 @@ def colour_graph(G_input):
             acceptable_colour += 1
 
         colours[v_current] = acceptable_colour
+
+
+def colour_graph(G_input):
+    v_count = G_input.shape[0]
+    # Prepare an array for colours, 0 = not coloured
+    colours = np.zeros((v_count,))
+
+    # Full copy the input graph G_input because we will modify it
+    G = G_input.copy()
+
+    # While we may fing the vertex which is connected with at least n ** 0.5 other vertexes,
+    # we call colour_v_with_neighbours_and_get_them_out() procedure
+    v_i = find_vertex_with_degree_more_then_square_of_n(G, v_count)
+    while v_i >= 0:
+        colour_v_with_neighbours_and_get_them_out(G, v_i, colours)
+        v_i = find_vertex_with_degree_more_then_square_of_n(G, v_count)
+
+    # Lastly, we perform a greedy colouring algorithm for all uncoloured vertexes
+    greedy_colouring(G, colours)
 
     return colours
 
