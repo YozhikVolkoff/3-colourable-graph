@@ -105,5 +105,13 @@ def generate_3_colourable_graph_with_MUGs():
         random_MUG = random.choice(MUGs)
 
         G = embed_random_MUG(G, random_MUG, G_edge)
+    
+    # Remove one random edge to make G 3-colourable
+    G_edges = np.nonzero(G == 1)
+    list_of_coordinates = list(zip(G_edges[0], G_edges[1]))
+
+    random_edge = random.choice(list_of_coordinates)
+    v_1, v_2 = random_edge[0], random_edge[1]
+    G[v_1][v_2], G[v_2][v_1] = 0, 0
 
     return G
