@@ -1,3 +1,12 @@
+## Used libraries:
+1. matplotlib.pyplot
+2. numpy
+3. random
+4. tqdm
+5. networkx
+
+But you may always run `pip install -r requirements.txt`
+
 ## Plan
 
 - [x] MUGs: 12b and 12c remaining
